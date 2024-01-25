@@ -12,9 +12,10 @@ import java.net.SocketAddress;
 
 import java.time.LocalDateTime;
 import java.io.FileWriter;
+import java.util.concurrent.Semaphore;
 
 
-    public class ServerSocket {
+public class ServerSocket {
 
         // Objetos para conexion
         private java.net.ServerSocket serverSocket;
@@ -31,60 +32,43 @@ import java.io.FileWriter;
             serverSocket = new java.net.ServerSocket(puerto);
         }
 
-        // igual que en el ejemplo anterior
-        public SocketAddress start () throws IOException {
-            //System.out.println(" (Servidor) Esperando conexiones...");
-            socket=serverSocket.accept();
-            is = socket.getInputStream();
-            os = socket.getOutputStream();
-            System.out.println(" (Servidor) Conexión establecida con cliente "+socket.getRemoteSocketAddress());
-            SocketAddress sa = socket.getRemoteSocketAddress();
-            return(sa);
-        }
+
 
         // igual que en el ejemplo anterior
         public void stop() throws IOException {
-            //System.out.println(" (Servidor) Cerrando conexiones...");
+
             is.close();
             os.close();
             socket.close();
             serverSocket.close();
-            //System.out.println (" (Servidor) Conexiones cerradas.");
+
         }
 
         // abrimos los canales de lectura y de escritura
         public void abrirCanalesDeTexto() {
-            //System.out.println(" (Servidor) Abriendo canales de texto...");
             //Canales de lectura
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
             //Canales de escritura
             pw = new PrintWriter(os, true);
-            //System.out.println("(Servidor) Cerrando canales de texto.");
         }
 
         // cerramos los canales de lectura y de escritura
         public void cerrarCanalesDeTexto() throws IOException {
-            //System.out.println(" (Servidor) Cerrando canales de texto...");
             //Canales de lectura
             br.close();
             isr.close();
             //Canales de escritura
             pw.close();
-            //System.out.println("(Servidor) Cerrando canales de texto.");
         }
 
         public String leerMensajeTexto()  throws IOException {
-            //System.out.println(" (Servidor) Leyendo mensaje...");
             String mensaje = br.readLine();
-            //System.out.println(" (Servidor) Mensaje leido.");
             return mensaje;
         }
 
         public void enviarMensajeTexto(String mensaje) {
-            //System.out.println(" (Servidor) Enviando mensaje...");
             pw.println(mensaje);
-            //System.out.println(" (Servidor) Mensaje enviado.");
         }
 
         public void guardarMensajeTexto(String mensaje) {
@@ -119,46 +103,52 @@ import java.io.FileWriter;
             return cliente;
         }
 
-        public static void main (String[] args) {
+        private final int MAX_CLIENTS = 10;
+        private final Semaphore semaphore = new Semaphore(MAX_CLIENTS);
 
-            String mensaje;
+
+
+        private void startServer() {
             try {
-                //Iniciamos
-                ServerSocket servidor = new ServerSocket(49175);
+                java.net.ServerSocket serverSocket = new java.net.ServerSocket(49175);
                 System.out.println("Sala Abierta.");
 
-                do {
-                    SocketAddress IPcliente = servidor.start();
-                    String host = servidor.identificarHost(IPcliente);
-                    servidor.abrirCanalesDeTexto();
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println(" (Servidor) Conexión establecida con cliente " + clientSocket.getRemoteSocketAddress());
 
-                    // Tomamos la hora en la que se produce la interaccion
-                    LocalDateTime horaLocal = LocalDateTime.now();
-                    int horas  = horaLocal.getHour();
-                    int minutos = horaLocal.getMinute();
-                    int segundos = horaLocal.getSecond();
-
-                    //Recepcion del mensaje del cliente
-                    mensaje = servidor.leerMensajeTexto();
-                    String salida=horas+":"+minutos+":"+segundos+" - Host "+host+": "+mensaje;
-                    System.out.println(salida);
-                    servidor.guardarMensajeTexto(salida);
-
-                    //Envío de la confirmacion del mensaje al cliente
-                    servidor.enviarMensajeTexto("ACK "+horas+":"+minutos+":"+segundos);
-
-                    //Cerramos el canal
-                    servidor.cerrarCanalesDeTexto();
-
-                } while (!mensaje.equals("close"));
-
-                //Cerramos el socket
-                servidor.stop();
-                System.out.println("Sala Cerrada.");
-
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+                    // Intenta adquirir un permiso del semáforo antes de crear un nuevo hilo
+                    try {
+                        semaphore.acquire();
+                        // Crea un nuevo hilo para manejar la conexión con el cliente
+                        ClientHandler clientHandler = new ClientHandler(clientSocket);
+                        new Thread(clientHandler).start();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        // Libera el permiso del semáforo, incluso si ocurre una excepción
+                        semaphore.release();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-}
+    public static void main(String[] args) {
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(49176);
+            serverSocket.startServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    serverSocket.serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    }

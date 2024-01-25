@@ -31,6 +31,13 @@ public class ClientSocket {
         socket = new Socket(serverIP,serverPort);
         os = socket.getOutputStream();
         is = socket.getInputStream();
+
+        // Abrimos los canales de lectura y de escritura
+        abrirCanalesDeTexto();
+
+        // Iniciamos el hilo de recepción de mensajes
+        ClientThread receiverThread = new ClientThread(br);
+        receiverThread.start();
     }
 
     public void stop () throws IOException {
