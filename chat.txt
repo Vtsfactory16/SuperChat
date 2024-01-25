@@ -1,6 +1,0 @@
-
-17:32:24 - Host 1: hhhh
-17:32:32 - Host 1: jjjj
-17:32:37 - Host 1: END
-17:33:21 - Host 1: ghjfjgh
-17:33:40 - Host 1: jhfkjhg
