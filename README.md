@@ -1,6 +1,7 @@
 # SuperChat
 
-![SuperChat](C:\\Users\\saxov\\Downloads\\SuperChat.jpg)
+<img src="Imagen/SuperChat.jpg" alt="SuperChat" width="400" height="400">
+
 
 Bienvenido a SuperChat, la aplicación de mensajería instantánea que va más allá de lo convencional. Prepárate para sumergirte
 en una experiencia única con un conjunto de funciones excepcionales y sorpresas emocionantes en cada actualización.
