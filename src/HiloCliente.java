@@ -27,7 +27,7 @@ public class HiloCliente extends Thread{
     /**
      * Servidor al que pertenece este hilo.
      */
-    private final Servidor server;
+    private final ServidorSocket server;
     /**
      * Identificador único del cliente con el que este hilo se comunica.
      */
@@ -42,7 +42,7 @@ public class HiloCliente extends Thread{
      * @param socket
      * @param server
      */
-    public HiloCliente(Socket socket,Servidor server) {
+    public HiloCliente(Socket socket, ServidorSocket server) {
         this.server=server;
         this.socket = socket;
         try {
@@ -135,8 +135,8 @@ public class HiloCliente extends Thread{
      * @param identificador
      */
     private void confirmarConexion(String identificador) {
-        Servidor.correlativo++;
-        this.identificador=Servidor.correlativo+" - "+identificador;
+        ServidorSocket.correlativo++;
+        this.identificador= ServidorSocket.correlativo+" - "+identificador;
         LinkedList<String> lista=new LinkedList<>();
         lista.add("CONEXION_ACEPTADA");
         lista.add(this.identificador);

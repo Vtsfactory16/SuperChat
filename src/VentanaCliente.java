@@ -1,5 +1,5 @@
 
-import java.awt.GridLayout;
+import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -11,19 +11,25 @@ import javax.swing.JTextField;
  * las conexiones y desconexiones de los diferentes clientes, así como un mensaje
  * de confirmación de que el servidor esta corriendo correctamente.
  */
-public class VentanaC extends javax.swing.JFrame {
+public class VentanaCliente extends javax.swing.JFrame {
 
     /**
      * Constructor de la ventana.
      */
-    public VentanaC() {
+    public VentanaCliente() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String ip_puerto_nombre[]=getIP_Puerto_Nombre();
         String ip=ip_puerto_nombre[0];
         String puerto=ip_puerto_nombre[1];
         String nombre=ip_puerto_nombre[2];
-        cliente=new Cliente(this, ip, Integer.valueOf(puerto), nombre);
+        cliente=new ClienteSocket(this, ip, Integer.valueOf(puerto), nombre);
+        //Se configura el color de fondo de la ventana
+        txtHistorial.setBackground(new Color(144, 238, 144));
+        //Se configura el color de fondo de la ventana
+        Color verdeFuerte = new Color(0, 128, 0); // Puedes ajustar los valores según tus preferencias
+        this.getContentPane().setBackground(verdeFuerte);
+
     }
 
     /**
@@ -131,9 +137,9 @@ public class VentanaC extends javax.swing.JFrame {
      * más mensajes.
      * @param evt
      */
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
         cliente.confirmarDesconexion();
-    }//GEN-LAST:event_formWindowClosing
+    }
 
     /**
      * @param args the command line arguments
@@ -152,20 +158,20 @@ public class VentanaC extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaC().setVisible(true);
+                new VentanaCliente().setVisible(true);
             }
         });
     }
@@ -177,11 +183,11 @@ public class VentanaC extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtHistorial;
     private javax.swing.JTextField txtMensaje;
-    // End of variables declaration//GEN-END:variables
+
     /**
      * Constante que almacena el puerto por defecto para la aplicación.
      */
-    private final String DEFAULT_PORT="10101";
+    private final String DEFAULT_PORT="60000";
     /**
      * Constante que almacena la IP por defecto (localhost) para el servidor.
      */
@@ -190,7 +196,7 @@ public class VentanaC extends javax.swing.JFrame {
      * Constante que almacena el cliente, con el cual se gestiona la comunicación
      * con el servidor.
      */
-    private final Cliente cliente;
+    private final ClienteSocket cliente;
     /**
      * Agrega un contacto al JComboBox de contactos.
      * @param contacto
@@ -228,12 +234,12 @@ public class VentanaC extends javax.swing.JFrame {
         JTextField usuario = new JTextField(20);
         ip.setText(DEFAULT_IP);
         puerto.setText(DEFAULT_PORT);
-        usuario.setText("Usuario");
+        usuario.setText("Usuario Cliente");
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new GridLayout(3, 2));
         myPanel.add(new JLabel("IP del Servidor:"));
         myPanel.add(ip);
-        myPanel.add(new JLabel("Puerto de la conexión:"));
+        myPanel.add(new JLabel("Puerto de la conexión(Sala de chat):"));
         myPanel.add(puerto);
         myPanel.add(new JLabel("Escriba su nombre:"));
         myPanel.add(usuario);

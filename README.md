@@ -10,7 +10,7 @@ en una experiencia única con un conjunto de funciones excepcionales y sorpresas
 ## Tareas a Realizar
 
 ### Principal:
-- **Conexión Cliente-Servidor mediante texto:** Establece una conexión eficiente para una comunicación fluida.
+- **Conexión ClienteSocket-ServidorSocket mediante texto:** Establece una conexión eficiente para una comunicación fluida.
 - **Multiconexión con varios Clientes:** Permite a los usuarios conectarse simultáneamente.
 - **Identificación del cliente con el último octeto de su IP:** Añade un toque personal a cada usuario.
 - **Añadir marca de tiempo:** Registra el momento preciso de cada mensaje.

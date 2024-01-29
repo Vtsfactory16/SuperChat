@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * lo que el servidor pueda decir, hay un hilo para cada cliente que se conecta al servidor y dicho
  * hilo tiene como función escuchar solamente a ese cliente.
  */
-public class Cliente extends Thread {
+public class ClienteSocket extends Thread {
     /**
      * Socket utilizado para comunicarse con el servidor.
      */
@@ -27,7 +27,7 @@ public class Cliente extends Thread {
     /**
      * Ventana utilizada para la interfaz gráfica del cliente.
      */
-    private final VentanaC ventana;
+    private final VentanaCliente ventana;
     /**
      * Identificador único del cliente dentro del chat.
      */
@@ -53,7 +53,7 @@ public class Cliente extends Thread {
      * @param puerto
      * @param nombre
      */
-    Cliente(VentanaC ventana, String host, Integer puerto, String nombre) {
+    ClienteSocket(VentanaCliente ventana, String host, Integer puerto, String nombre) {
         this.ventana=ventana;
         this.host=host;
         this.puerto=puerto;

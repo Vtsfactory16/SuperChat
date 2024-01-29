@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * un hilo para cada cliente que se conecta, dicho hilo es el que se encarga de
  * escuchar lo que el cliente dice y de enviar mensajes a dicho cliente.
  */
-public class Servidor extends Thread{
+public class ServidorSocket extends Thread{
     /**
      * Socket utilizado para escuchar las conexiones de los clientes.
      */
@@ -23,7 +23,7 @@ public class Servidor extends Thread{
     /**
      * Variable que almacena la ventana que gestiona la interfaz gráfica del servidor.
      */
-    private final VentanaS ventana;
+    private final VentanaServer ventana;
     /**
      * Variable que almacena el puerto que el servidor usará para escuchar.
      */
@@ -37,7 +37,7 @@ public class Servidor extends Thread{
      * @param puerto
      * @param ventana
      */
-    public Servidor(String puerto, VentanaS ventana) {
+    public ServidorSocket(String puerto, VentanaServer ventana) {
         correlativo=0;
         this.puerto=puerto;
         this.ventana=ventana;

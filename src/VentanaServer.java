@@ -10,17 +10,17 @@ import javax.swing.JTextField;
 /**
  * Clase que gestiona la interfaz gráfica del servidor.
  */
-public class VentanaS extends javax.swing.JFrame {
-    private final String DEFAULT_PORT="10101";
-    private final Servidor servidor;
+public class VentanaServer extends javax.swing.JFrame {
+    private final String DEFAULT_PORT="60000";
+    private final ServidorSocket servidor;
     /**
      * Creates new form Ventana
      */
-    public VentanaS() {
+    public VentanaServer() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String puerto=getPuerto();
-        servidor=new Servidor(puerto, this);
+        servidor=new ServidorSocket(puerto, this);
     }
 
     /**
@@ -78,20 +78,20 @@ public class VentanaS extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaS().setVisible(true);
+                new VentanaServer().setVisible(true);
             }
         });
     }
@@ -118,7 +118,7 @@ public class VentanaS extends javax.swing.JFrame {
         puerto.setText(p);
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new GridLayout(2, 1));
-        myPanel.add(new JLabel("Puerto de la conexión:"));
+        myPanel.add(new JLabel("Puerto de la conexión(Sala de Chat):"));
         myPanel.add(puerto);
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Configuraciones de la comunicación", JOptionPane.OK_CANCEL_OPTION);
@@ -134,6 +134,6 @@ public class VentanaS extends javax.swing.JFrame {
      * corriendo correctamente.
      */
     void addServidorIniciado() {
-        txtClientes.setText("Inicializando el servidor... [Ok].");
+        txtClientes.setText("Servidor Inicializandose... [Ok].");
     }
 }
