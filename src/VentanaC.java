@@ -7,8 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * Clase que maneja la interfaz gráfica del cliente.
- * @author Erick Navarro
+ * Clase que gestiona la interfaz gráfica del cliente, que muestra un log de
+ * las conexiones y desconexiones de los diferentes clientes, así como un mensaje
+ * de confirmación de que el servidor esta corriendo correctamente.
  */
 public class VentanaC extends javax.swing.JFrame {
 

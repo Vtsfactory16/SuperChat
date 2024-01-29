@@ -8,10 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * Clase que gestiona la interfaz gráfica del servidor, que muestra un log de
- * las conexiones y desconexiones de los diferentes clientes, así como un mensaje
- * de confirmación de que el servidor esta corriendo correctamente.
- * @author Erick Navarro
+ * Clase que gestiona la interfaz gráfica del servidor.
  */
 public class VentanaS extends javax.swing.JFrame {
     private final String DEFAULT_PORT="10101";
