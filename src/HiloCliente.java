@@ -36,7 +36,7 @@ public class HiloCliente extends Thread{
      */
     private boolean escuchando;
 
-    private final String directorioChats = "chats";
+    private final String directorioChats = "chats/";
     /**
      * Método constructor de la clase hilo cliente.
      * @param socket

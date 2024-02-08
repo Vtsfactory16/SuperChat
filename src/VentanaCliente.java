@@ -127,10 +127,10 @@ public class VentanaCliente extends javax.swing.JFrame {
         //se agrega en el historial de la conversación lo que el cliente ha dicho
         txtHistorial.append("## Yo -> "+cliente_receptor+ " ## : \n" + mensaje+"\n");
         txtMensaje.setText("");
-    }//GEN-LAST:event_btnEnviarActionPerformed
+    }
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-    }//GEN-LAST:event_formWindowClosed
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {
+    }
     /**
      * Cuando la ventana se este cerrando se notifica al servidor que el cliente
      * se ha desconectado, por lo que los demás clientes del chat no podrán enviarle
@@ -176,7 +176,7 @@ public class VentanaCliente extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+
     private javax.swing.JButton btnEnviar;
     private javax.swing.JComboBox cmbContactos;
     private javax.swing.JLabel jLabel1;
