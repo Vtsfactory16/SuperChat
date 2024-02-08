@@ -1,8 +1,6 @@
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 
@@ -37,6 +35,8 @@ public class HiloCliente extends Thread{
      * lo que el cliente que atiende esta diciendo.
      */
     private boolean escuchando;
+
+    private final String directorioChats = "chats";
     /**
      * Método constructor de la clase hilo cliente.
      * @param socket
@@ -109,11 +109,14 @@ public class HiloCliente extends Thread{
                 break;
             case "MENSAJE":
 
-                String destinatario=lista.get(2);
-                server.clientes
-                        .stream()
-                        .filter(h -> (destinatario.equals(h.getIdentificador())))
-                        .forEach((h) -> h.enviarMensaje(lista));
+                String remitente = lista.get(1);
+                String destinatario = lista.get(2);
+                String mensaje = lista.get(3);
+                // Envío del mensaje a todos los clientes destinatarios
+                server.clientes.stream().filter(h -> destinatario.equals(h.getIdentificador()))
+                        .forEach(h -> h.enviarMensaje(lista));
+                // Guardar el mensaje en el archivo correspondiente al remitente
+                guardarMensaje(remitente, destinatario, mensaje);
                 break;
             default:
                 break;
@@ -177,5 +180,17 @@ public class HiloCliente extends Thread{
         server.clientes
                 .stream()
                 .forEach(h -> h.enviarMensaje(auxLista));
+    }
+    // Método para guardar el mensaje en el archivo correspondiente
+    private void guardarMensaje(String remitente, String destinatario, String mensaje) {
+        String rutaArchivo = directorioChats + remitente + "_" + destinatario + ".txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true));
+            writer.write(mensaje);
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
