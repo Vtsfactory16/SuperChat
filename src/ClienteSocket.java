@@ -46,18 +46,22 @@ public class ClienteSocket extends Thread {
      * de los diversos clientes.
      */
     private final int puerto;
+
+    private String contraseña;
     /**
      * Constructor de la clase cliente.
      * @param ventana
      * @param host
      * @param puerto
      * @param nombre
+     * @param contraseña
      */
-    ClienteSocket(VentanaCliente ventana, String host, Integer puerto, String nombre) {
+    ClienteSocket(VentanaCliente ventana, String host, Integer puerto, String nombre, String contraseña) {
         this.ventana=ventana;
         this.host=host;
         this.puerto=puerto;
         this.identificador=nombre;
+        this.contraseña=contraseña;
         escuchando=true;
         this.start();
     }
@@ -70,7 +74,7 @@ public class ClienteSocket extends Thread {
             objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
             objectInputStream=new ObjectInputStream(socket.getInputStream());
             System.out.println("Conexion exitosa!!!!");
-            this.enviarSolicitudConexion(identificador);
+            this.enviarSolicitudConexion(identificador, contraseña);
             this.escuchar();
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(ventana, "Conexión rehusada, servidor desconocido,\n"
@@ -108,13 +112,13 @@ public class ClienteSocket extends Thread {
      */
     public void enviarMensaje(String cliente_receptor, String mensaje){
         LinkedList<String> lista=new LinkedList<>();
-        //tipo
+
         lista.add("MENSAJE");
-        //cliente emisor
+
         lista.add(identificador);
-        //cliente receptor
+
         lista.add(cliente_receptor);
-        //mensaje que se desea transmitir
+
         lista.add(mensaje);
         try {
             objectOutputStream.writeObject(lista);
@@ -153,12 +157,9 @@ public class ClienteSocket extends Thread {
      * @param lista
      */
     public void ejecutar(LinkedList<String> lista){
-        // 0 - El primer elemento de la lista es siempre el tipo
         String tipo=lista.get(0);
         switch (tipo) {
             case "CONEXION_ACEPTADA":
-                // 1      - Identificador propio del nuevo usuario
-                // 2 .. n - Identificadores de los clientes conectados actualmente
                 identificador=lista.get(1);
                 ventana.sesionIniciada(identificador);
                 for(int i=2;i<lista.size();i++){
@@ -166,17 +167,12 @@ public class ClienteSocket extends Thread {
                 }
                 break;
             case "NUEVO_USUARIO_CONECTADO":
-                // 1      - Identificador propio del cliente que se acaba de conectar
                 ventana.addContacto(lista.get(1));
                 break;
             case "USUARIO_DESCONECTADO":
-                // 1      - Identificador propio del cliente que se acaba de conectar
                 ventana.eliminarContacto(lista.get(1));
                 break;
             case "MENSAJE":
-                // 1      - Cliente emisor
-                // 2      - Cliente receptor
-                // 3      - Mensaje
                 ventana.addMensaje(lista.get(1), lista.get(3));
                 break;
             default:
@@ -188,12 +184,14 @@ public class ClienteSocket extends Thread {
      * lista de clientes, para ello se ejecuta este método.
      * @param identificador
      */
-    private void enviarSolicitudConexion(String identificador) {
+    private void enviarSolicitudConexion(String identificador, String contraseña) {
         LinkedList<String> lista=new LinkedList<>();
-        //tipo
+
         lista.add("SOLICITUD_CONEXION");
-        //cliente solicitante
+
         lista.add(identificador);
+
+        lista.add(contraseña);
         try {
             objectOutputStream.writeObject(lista);
         } catch (IOException ex) {
@@ -207,9 +205,7 @@ public class ClienteSocket extends Thread {
      */
     void confirmarDesconexion() {
         LinkedList<String> lista=new LinkedList<>();
-        //tipo
         lista.add("SOLICITUD_DESCONEXION");
-        //cliente solicitante
         lista.add(identificador);
         try {
             objectOutputStream.writeObject(lista);

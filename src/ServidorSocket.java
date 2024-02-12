@@ -82,4 +82,5 @@ public class ServidorSocket extends Thread{
     void agregarLog(String texto) {
         ventana.agregarLog(texto);
     }
+
 }

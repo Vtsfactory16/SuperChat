@@ -96,24 +96,20 @@ public class HiloCliente extends Thread{
      * @param lista
      */
     public void ejecutar(LinkedList<String> lista){
-
-        String tipo=lista.get(0);
+        String tipo = lista.get(0);
         switch (tipo) {
             case "SOLICITUD_CONEXION":
-
                 confirmarConexion(lista.get(1));
                 break;
             case "SOLICITUD_DESCONEXION":
-
                 confirmarDesConexion();
                 break;
             case "MENSAJE":
-
                 String remitente = lista.get(1);
                 String destinatario = lista.get(2);
                 String mensaje = lista.get(3);
-                // Envío del mensaje a todos los clientes destinatarios
-                server.clientes.stream().filter(h -> destinatario.equals(h.getIdentificador()))
+                // Envío del mensaje a todos los clientes destinatarios, excluyendo al remitente
+                server.clientes.stream().filter(h -> !remitente.equals(h.getIdentificador()) && destinatario.equals(h.getIdentificador()))
                         .forEach(h -> h.enviarMensaje(lista));
                 // Guardar el mensaje en el archivo correspondiente al remitente
                 guardarMensaje(remitente, destinatario, mensaje);
@@ -122,6 +118,7 @@ public class HiloCliente extends Thread{
                 break;
         }
     }
+
     /**
      * Método para enviar un mensaje al cliente através del socket.
      * @param lista
