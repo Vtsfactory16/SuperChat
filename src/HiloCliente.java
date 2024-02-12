@@ -31,7 +31,7 @@ public class HiloCliente extends Thread{
      */
     private String identificador;
     /**
-     * Variable booleana que almacena verdadero cuando este hilo esta escuchando
+     * Variable booleana que almacena verdadero cuando este hilo est escuchando
      * lo que el cliente que atiende esta diciendo.
      */
     private boolean escuchando;

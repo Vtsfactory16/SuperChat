@@ -121,7 +121,8 @@ public class VentanaCliente extends javax.swing.JFrame {
         String mensaje=txtMensaje.getText();
         cliente.enviarMensaje(cliente_receptor, mensaje);
         //se agrega en el historial de la conversación lo que el cliente ha dicho
-        txtHistorial.append("## Yo -> "+cliente_receptor+ " ## : \n" + mensaje+"\n");
+        String nombreCliente = "Yo"; // Prefijo para indicar que el mensaje fue enviado por el cliente
+        txtHistorial.append("## " + nombreCliente +": " + "\n"+ mensaje + "\n");
         txtMensaje.setText("");
     }
 
