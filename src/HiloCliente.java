@@ -2,6 +2,7 @@
 
 import java.io.*;
 import java.net.Socket;
+import java.security.Key;
 import java.util.LinkedList;
 
 /**
@@ -179,7 +180,8 @@ public class HiloCliente extends Thread{
                 .forEach(h -> h.enviarMensaje(auxLista));
     }
     // Método para guardar el mensaje en el archivo correspondiente
-    private void guardarMensaje(String remitente, String destinatario, String mensaje) {
+
+   /* private void guardarMensaje(String remitente, String destinatario, String mensaje) {
         String rutaArchivo = directorioChats + remitente + "_" + destinatario + ".txt";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true));
@@ -189,5 +191,22 @@ public class HiloCliente extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
+   // Método para guardar el mensaje en el archivo correspondiente
+   private void guardarMensaje(String remitente, String destinatario, String mensaje) {
+       String rutaArchivo = directorioChats + remitente + "_" + destinatario + ".txt";
+       try {
+           // Encriptar el mensaje
+           Key clave = AESSimpleManager.obtenerClave("tu_clave_secreta", 16); // Cambia "tu_clave_secreta" por una clave segura
+           String mensajeEncriptado = AESSimpleManager.cifrar(mensaje, clave);
+
+           // Guardar el mensaje en el archivo
+           BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true));
+           writer.write(mensajeEncriptado);
+           writer.newLine();
+           writer.close();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
 }

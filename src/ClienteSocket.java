@@ -47,21 +47,21 @@ public class ClienteSocket extends Thread {
      */
     private final int puerto;
 
-    private String contraseña;
+    private String contrasena;
     /**
      * Constructor de la clase cliente.
      * @param ventana
      * @param host
      * @param puerto
      * @param nombre
-     * @param contraseña
+     * @param contrasena
      */
-    ClienteSocket(VentanaCliente ventana, String host, Integer puerto, String nombre, String contraseña) {
+    ClienteSocket(VentanaCliente ventana, String host, Integer puerto, String nombre, String contrasena) {
         this.ventana=ventana;
         this.host=host;
         this.puerto=puerto;
         this.identificador=nombre;
-        this.contraseña=contraseña;
+        this.contrasena =contrasena;
         escuchando=true;
         this.start();
     }
@@ -74,7 +74,7 @@ public class ClienteSocket extends Thread {
             objectOutputStream=new ObjectOutputStream(socket.getOutputStream());
             objectInputStream=new ObjectInputStream(socket.getInputStream());
             System.out.println("Conexion exitosa!!!!");
-            this.enviarSolicitudConexion(identificador, contraseña);
+            this.enviarSolicitudConexion(identificador, contrasena);
             this.escuchar();
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(ventana, "Conexión rehusada, servidor desconocido,\n"

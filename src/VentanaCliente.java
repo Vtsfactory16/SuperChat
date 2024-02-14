@@ -28,6 +28,8 @@ public class VentanaCliente extends javax.swing.JFrame {
         Color verdeFuerte = new Color(0, 128, 0);
         this.getContentPane().setBackground(verdeFuerte);
 
+
+
     }
 
     /**
